@@ -341,36 +341,16 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 				File oldWorld = new File(new File(s), dim);
 
 				if ((!newWorld.isDirectory()) && (oldWorld.isDirectory())) {
-					MinecraftServer.LOGGER.info("---- Migration of old " + worldType + " folder required ----");
-					MinecraftServer.LOGGER.info(
-							"Unfortunately due to the way that Minecraft implemented multiworld support in 1.6, Bukkit requires that you move your "
-									+ worldType + " folder to a new location in order to operate correctly.");
-					MinecraftServer.LOGGER.info(
-							"We will move this folder for you, but it will mean that you need to move it back should you wish to stop using Bukkit in the future.");
-					MinecraftServer.LOGGER.info("Attempting to move " + oldWorld + " to " + newWorld + "...");
-
-					if (newWorld.exists()) {
-						MinecraftServer.LOGGER.warn("A file or folder already exists at " + newWorld + "!");
-						MinecraftServer.LOGGER.info("---- Migration of old " + worldType + " folder failed ----");
-					} else if (newWorld.getParentFile().mkdirs()) {
+					if (newWorld.getParentFile().mkdirs()) {
 						if (oldWorld.renameTo(newWorld)) {
-							MinecraftServer.LOGGER.info("Success! To restore " + worldType
-									+ " in the future, simply move " + newWorld + " to " + oldWorld);
 							// Migrate world data too.
 							try {
 								com.google.common.io.Files.copy(new File(new File(s), "level.dat"),
 										new File(new File(name), "level.dat"));
 							} catch (IOException exception) {
-								MinecraftServer.LOGGER.warn("Unable to migrate world data.");
+
 							}
-							MinecraftServer.LOGGER.info("---- Migration of old " + worldType + " folder complete ----");
-						} else {
-							MinecraftServer.LOGGER.warn("Could not move folder " + oldWorld + " to " + newWorld + "!");
-							MinecraftServer.LOGGER.info("---- Migration of old " + worldType + " folder failed ----");
 						}
-					} else {
-						MinecraftServer.LOGGER.warn("Could not create path for " + newWorld + "!");
-						MinecraftServer.LOGGER.info("---- Migration of old " + worldType + " folder failed ----");
 					}
 				}
 
@@ -410,7 +390,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 		// spawn in memory
 		for (int m = 0; m < worlds.size(); m++) {
 			WorldServer worldserver = this.worlds.get(m);
-			LOGGER.info("Preparing start region for level " + m + " (Seed: " + worldserver.getSeed() + ")");
 
 			if (!worldserver.getWorld().getKeepSpawnInMemory()) {
 				continue;
@@ -469,7 +448,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 	protected void a_(String s, int i) {
 		this.f = s;
 		this.g = i;
-		MinecraftServer.LOGGER.info(s + ": " + i + "%");
 	}
 
 	protected void s() {

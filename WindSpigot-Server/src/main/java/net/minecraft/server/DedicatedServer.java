@@ -83,7 +83,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 					// CraftBukkit start - JLine disabling compatibility
 					while (!isStopped() && isRunning()) {
 						if (org.bukkit.craftbukkit.Main.useJline) {
-							s = bufferedreader.readLine(">", null);
+							s = bufferedreader.readLine("|>", null);
 						} else {
 							s = bufferedreader.readLine();
 						}
@@ -176,11 +176,11 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			// Spigot start
 			NachoConfig.init((File) options.valueOf("nacho-settings")); // NachoSpigot - Load config before PlayerList
 			KnockbackConfig.init((File) options.valueOf("knockback-settings"));
-			
+
 			// WindSpigot start - config
 			WindSpigotConfig.init((File) options.valueOf("windspigot-settings"));
 			// WindSpigot end
-			
+
 			this.a(new DedicatedPlayerList(this));
 			org.spigotmc.SpigotConfig.init((File) options.valueOf("spigot-settings"));
 			org.spigotmc.SpigotConfig.registerCommands();
@@ -367,7 +367,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 	@Override
 	public CrashReport b(CrashReport crashreport) {
 		crashreport = super.b(crashreport);
-		crashreport.g().a("Is Modded", new Callable() {
+		crashreport.g().a("Is Modded", new Callable<String>() {
 			public String a() throws Exception {
 				String s = DedicatedServer.this.getServerModName();
 
@@ -376,7 +376,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			}
 
 			@Override
-			public Object call() throws Exception {
+			public String call() throws Exception {
 				return this.a();
 			}
 		});
@@ -603,17 +603,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 	}
 
 	protected boolean aR() {
-		server.getLogger().info("**** Beginning UUID conversion, this may take A LONG time ****"); // Spigot, let the
-																									// user know whats
-																									// up!
 		boolean flag = false;
 
 		int i;
 
 		for (i = 0; !flag && i <= 2; ++i) {
 			if (i > 0) {
-				DedicatedServer.LOGGER
-						.warn("Encountered a problem while converting the user banlist, retrying in a few seconds");
 				this.aU();
 			}
 
@@ -624,8 +619,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		for (i = 0; !flag1 && i <= 2; ++i) {
 			if (i > 0) {
-				DedicatedServer.LOGGER
-						.warn("Encountered a problem while converting the ip banlist, retrying in a few seconds");
 				this.aU();
 			}
 
@@ -636,8 +629,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		for (i = 0; !flag2 && i <= 2; ++i) {
 			if (i > 0) {
-				DedicatedServer.LOGGER
-						.warn("Encountered a problem while converting the op list, retrying in a few seconds");
 				this.aU();
 			}
 
@@ -648,8 +639,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		for (i = 0; !flag3 && i <= 2; ++i) {
 			if (i > 0) {
-				DedicatedServer.LOGGER
-						.warn("Encountered a problem while converting the whitelist, retrying in a few seconds");
 				this.aU();
 			}
 
@@ -660,8 +649,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		for (i = 0; !flag4 && i <= 2; ++i) {
 			if (i > 0) {
-				DedicatedServer.LOGGER.warn(
-						"Encountered a problem while converting the player save files, retrying in a few seconds");
 				this.aU();
 			}
 
