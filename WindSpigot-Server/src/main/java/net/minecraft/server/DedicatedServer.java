@@ -123,24 +123,14 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 		thread.setDaemon(true);
 		thread.start();
-		DedicatedServer.LOGGER.info("Starting minecraft server version 1.8.8");
 		if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
-			DedicatedServer.LOGGER.warn(
-					"To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
+			DedicatedServer.LOGGER.warn("Less than 512M ram");
 		}
 
-		DedicatedServer.LOGGER.info("Loading properties");
 		this.propertyManager = new PropertyManager(this.options); // CraftBukkit - CLI argument support
 		this.p = new EULA(new File("eula.txt"));
 		// Spigot Start
-		boolean eulaAgreed = Boolean.getBoolean("com.mojang.eula.agree");
-		if (eulaAgreed) {
-			System.err.println("You have used the Spigot command line EULA agreement flag.");
-			System.err.println(
-					"By using this setting you are indicating your agreement to Mojang's EULA (https://account.mojang.com/documents/minecraft_eula).");
-			System.err.println(
-					"If you do not agree to the above EULA please stop your server and remove this flag immediately.");
-		}
+		boolean eulaAgreed = true;
 		// Spigot End
 		if (!this.p.a() && !eulaAgreed) { // Spigot
 			DedicatedServer.LOGGER
@@ -174,7 +164,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			int i = this.propertyManager.getInt("gamemode", WorldSettings.EnumGamemode.SURVIVAL.getId());
 
 			this.r = WorldSettings.a(i);
-			DedicatedServer.LOGGER.info("Default game type: " + this.r);
 			InetAddress inetaddress = null;
 
 			if (this.getServerIp().length() > 0) {
@@ -200,11 +189,9 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			org.github.paperspigot.PaperSpigotConfig.init((File) options.valueOf("paper-settings"));
 			org.github.paperspigot.PaperSpigotConfig.registerCommands();
 			// PaperSpigot end
-			
-			DedicatedServer.LOGGER.info("Generating keypair");
+
 			this.a(MinecraftEncryption.b());
-			DedicatedServer.LOGGER.info("Starting Minecraft server on "
-					+ (this.getServerIp().length() == 0 ? "*" : this.getServerIp()) + ":" + this.R());
+			//TODO: SpigotFix Save IP, PORT
 
 			if (!org.spigotmc.SpigotConfig.lateBind) {
 				try {
@@ -225,49 +212,20 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 			// Spigot End
 
 			if (!this.getOnlineMode()) {
-				DedicatedServer.LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
+				if (!org.spigotmc.SpigotConfig.bungee) DedicatedServer.LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
 				DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
 				// Spigot start
 				if (org.spigotmc.SpigotConfig.bungee) {
-					DedicatedServer.LOGGER.warn(
-							"Whilst this makes it possible to use BungeeCord, unless access to your server is properly restricted, it also opens up the ability for hackers to connect with any username they choose.");
-					DedicatedServer.LOGGER
-							.warn("Please see http://www.spigotmc.org/wiki/firewall-guide/ for further information.");
 					if (!WindSpigotConfig.stopNotifyBungee) {
-						DedicatedServer.LOGGER
-								.warn("---------------------------- NachoSpigot Checker ----------------------------");
-						DedicatedServer.LOGGER.warn(
-								"If you don't want to see this message anymore, set \"settings.stop-notify-bungee\" to \"true\" in \"nacho.yml\"!");
-						DedicatedServer.LOGGER.warn("Checking firewall..");
 						try {
 							String external = IPUtils.getExternalAddress();
 							int port = getServerPort();
-							if (IPUtils.isAccessible(external, port)) {
-								DedicatedServer.LOGGER.error("THIS SERVER IS ACCESSIBLE FROM THE OUTSIDE");
-								DedicatedServer.LOGGER
-										.error("WITHOUT HAVING A PROPER PLUGIN LIKE BUNGEEGUARD INSTALLED");
-								DedicatedServer.LOGGER
-										.error("EVERYONE WILL BE ABLE TO JOIN THIS SERVER IN OFFLINE MODE");
-								DedicatedServer.LOGGER
-										.error("PLEASE FIX YOUR FIREWALL OR INSTALL A PLUGIN LIKE BUNGEEGUARD");
-								DedicatedServer.LOGGER
-										.error("AND THEN DISABLE THIS NOTIFICATION IN THE CONFIGURATION FILE");
-							} else {
-								DedicatedServer.LOGGER.info(
-										"This instance does not seem to be accessible from the internet, good! Continuing..");
-							}
+							//if (IPUtils.isAccessible(external, port)) {
 						} catch (Exception e) {
-							DedicatedServer.LOGGER.error("Could not check firewall..");
 							e.printStackTrace();
 						}
-						DedicatedServer.LOGGER
-								.warn("---------------------------- NachoSpigot Checker ----------------------------");
 					}
-				} else {
-					DedicatedServer.LOGGER.warn(
-							"While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
 				}
-				// Spigot end
 				DedicatedServer.LOGGER
 						.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
 			}
@@ -319,20 +277,17 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 				this.c((this.getMaxBuildHeight() + 8) / 16 * 16);
 				this.c(MathHelper.clamp(this.getMaxBuildHeight(), 64, 256));
 				this.propertyManager.setProperty("max-build-height", this.getMaxBuildHeight());
-				DedicatedServer.LOGGER.info("Preparing level \"" + this.U() + "\"");
 				this.a(this.U(), this.U(), k, worldtype, s2);
 				long i1 = System.nanoTime() - j;
 				String s3 = String.format("%.3fs", i1 / 1.0E9D);
 
-				DedicatedServer.LOGGER.info("Done (" + s3 + ")! For help, type \"help\" or \"?\"");
+				DedicatedServer.LOGGER.info("SpigotFix started in " + s3 + ".");
 				if (this.propertyManager.getBoolean("enable-query", false)) {
-					DedicatedServer.LOGGER.info("Starting GS4 status listener");
 					this.m = new RemoteStatusListener(this);
 					this.m.a();
 				}
 
 				if (this.propertyManager.getBoolean("enable-rcon", false)) {
-					DedicatedServer.LOGGER.info("Starting remote control listener");
 					this.n = new RemoteControlListener(this);
 					this.n.a();
 					this.remoteConsole = new org.bukkit.craftbukkit.command.CraftRemoteConsoleCommandSender(); // CraftBukkit
@@ -340,8 +295,6 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 
 				// CraftBukkit start
 				if (this.server.getBukkitSpawnRadius() > -1) {
-					DedicatedServer.LOGGER.info(
-							"'settings.spawn-radius' in bukkit.yml has been moved to 'spawn-protection' in server.properties. I will move your config for you.");
 					this.propertyManager.properties.remove("spawn-protection");
 					this.propertyManager.getInt("spawn-protection", this.server.getBukkitSpawnRadius());
 					this.server.removeBukkitSpawnRadius();
