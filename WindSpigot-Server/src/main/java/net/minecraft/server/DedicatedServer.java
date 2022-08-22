@@ -83,7 +83,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
 					// CraftBukkit start - JLine disabling compatibility
 					while (!isStopped() && isRunning()) {
 						if (org.bukkit.craftbukkit.Main.useJline) {
-							s = bufferedreader.readLine("|>", null);
+							s = bufferedreader.readLine("|> ", null);
 						} else {
 							s = bufferedreader.readLine();
 						}

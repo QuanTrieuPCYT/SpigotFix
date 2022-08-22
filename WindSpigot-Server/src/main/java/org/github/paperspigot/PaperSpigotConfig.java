@@ -152,7 +152,6 @@ public class PaperSpigotConfig {
 
 	private static void dataValueAllowedItems() {
 		dataValueAllowedItems = new HashSet<Integer>(getList("data-value-allowed-items", Collections.emptyList()));
-		Bukkit.getLogger().info("Data value allowed items: " + StringUtils.join(dataValueAllowedItems, ", "));
 	}
 
 	public static boolean stackableLavaBuckets;

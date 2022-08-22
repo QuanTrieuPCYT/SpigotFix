@@ -937,10 +937,8 @@ public final class CraftServer implements Server {
 		try {
 			perms = (Map<String, Map<String, Object>>) yaml.load(stream);
 		} catch (MarkedYAMLException ex) {
-			getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML: " + ex.toString());
 			return;
 		} catch (Throwable ex) {
-			getLogger().log(Level.WARNING, "Server permissions file " + file + " is not valid YAML.", ex);
 			return;
 		} finally {
 			try {
@@ -950,7 +948,6 @@ public final class CraftServer implements Server {
 		}
 
 		if (perms == null) {
-			getLogger().log(Level.INFO, "Server permissions file " + file + " is empty, ignoring it");
 			return;
 		}
 
@@ -961,7 +958,6 @@ public final class CraftServer implements Server {
 			try {
 				pluginManager.addPermission(perm);
 			} catch (IllegalArgumentException ex) {
-				getLogger().log(Level.SEVERE, "Permission in " + file + " was already defined", ex);
 			}
 		}
 	}

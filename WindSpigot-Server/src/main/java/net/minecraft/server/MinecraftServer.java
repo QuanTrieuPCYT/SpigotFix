@@ -469,8 +469,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 
 				if (worldserver != null) {
 					if (!flag) {
-						MinecraftServer.LOGGER.info("Saving chunks for level \'" + worldserver.getWorldData().getName()
-								+ "\'/" + worldserver.worldProvider.getName());
 					}
 
 					try {
@@ -514,7 +512,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			}
 
 			if (this.v != null) {
-				MinecraftServer.LOGGER.info("Saving players");
 				this.v.savePlayers();
 				this.v.u();
 				try {
@@ -524,7 +521,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			}
 
 			if (this.worldServer != null) {
-				MinecraftServer.LOGGER.info("Saving worlds");
 				this.saveChunks(false);
 
 				/*
@@ -541,7 +537,6 @@ public abstract class MinecraftServer extends ReentrantIAsyncHandler<TasksPerTic
 			}
 			// Spigot start
 			if (org.spigotmc.SpigotConfig.saveUserCacheOnStopOnly) {
-				LOGGER.info("Saving usercache.json");
 				this.Z.c();
 			}
 			// Spigot end
