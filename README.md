@@ -28,6 +28,8 @@ See the patches list below.
 **All credit goes to the people that made these patches.**<br>
 *Give credit where credit is due!*
 ```
+[SpigotFix-0001] Less trash in console
+
 [WindSpigot-0001] Thread affinity
 [WindSpigot-0002] WindSpigot config
 [WindSpigot-0003] Mob AI toggle command
