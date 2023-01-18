@@ -29,6 +29,9 @@ See the patches list below.
 *Give credit where credit is due!*
 ```
 [SpigotFix-0001] Less trash in console
+[SpigotFix-0002] Async player kicking
+[SpigotFix-0003] Async chunk (un-)loading
+[SpigotFix-0002] cleared AsyncCatcher#catchOp (causing trouble)
 
 [WindSpigot-0001] Thread affinity
 [WindSpigot-0002] WindSpigot config
