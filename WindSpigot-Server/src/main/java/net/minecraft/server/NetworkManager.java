@@ -508,13 +508,10 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 				if (this.j() != null) {
 					this.getPacketListener().a(this.j());
 				} else if (this.getPacketListener() != null) {
-					this.getPacketListener().a(new ChatComponentText("Disconnected"));
+					this.getPacketListener().a(new ChatComponentText("§cDisconnected"));
 				}
 				this.i.clear(); // Free up packet queue.
-			} else {
-				NetworkManager.LOGGER.warn("handleDisconnection() called twice");
 			}
-
 		}
 	}
 
@@ -523,22 +520,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet> {
 	}
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception { // CraftBukkit
-																												// - fix
-																												// decompile
-																												// error
-																												// this.a(channelhandlercontext,
-																												// object);
-																												// FlamePaper
-																												// -
-																												// Check
-																												// if
-																												// channel
-																												// is
-																												// opened
-																												// before
-																												// reading
-																												// packet
+	protected void channelRead0(ChannelHandlerContext channelhandlercontext, Packet object) throws Exception {
 		if (g()) {
 			this.a(channelhandlercontext, object);
 		}
